@@ -6,18 +6,20 @@ package gameFiles;
  */
 public class SnakesAndLadders {
 	
-	Board gameBoard;
+	private Board gameBoard;
+	private Die gameDie;
 	
 	public SnakesAndLadders(int boardDimension, int amountOfPlayers){
 		this.gameBoard = new Board(boardDimension, amountOfPlayers);
+		gameDie = new Die(6);
 	}
 	
 	public void printPlayers(){
 		gameBoard.printPlayers();
 	}
 	
-	public void gameRound(){
-		
+	public void doTurn(int playerNb){
+		gameBoard.movePlayer(playerNb,gameDie.roll());
 	}
 
 }

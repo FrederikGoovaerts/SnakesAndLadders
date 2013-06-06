@@ -6,9 +6,9 @@ import java.util.Scanner;
 
 public class Board {
 	
-	int boardDimension;
-	HashSet<String> playerNames;
-	ArrayList<Player> players;
+	private int boardDimension;
+	private HashSet<String> playerNames;
+	private ArrayList<Player> players;
 	
 	public Board(int boardDimension, int amountOfPlayers){
 		this.boardDimension = boardDimension;
@@ -42,6 +42,11 @@ public class Board {
 	}
 	
 	public void printBoard(){
+		
+	}
+
+	public void movePlayer(int playerNb, int roll) {
+		// TODO Auto-generated method stub
 		
 	}
 	

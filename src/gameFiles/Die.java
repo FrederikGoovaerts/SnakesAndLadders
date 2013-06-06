@@ -5,7 +5,7 @@ import java.util.Random;
 public class Die {
 	
 	private int nbOfSides;
-	Random random = new Random();
+	private Random random = new Random();
 	
 	public Die(int nbOfSides){
 		this.nbOfSides = nbOfSides;
