@@ -10,18 +10,18 @@ public class Board {
 	private HashSet<String> playerNames;
 	private ArrayList<Player> players;
 	
-	public Board(int boardDimension, int amountOfPlayers){
+	//als het bord n op n groot is is de boarddimension n. Er zijn dus n^2 vakjes.
+	public Board(int boardDimension, int amountOfPlayers, Scanner input){
 		this.boardDimension = boardDimension;
 		playerNames = new HashSet<String>();
 		players = new ArrayList<Player>();
 		int i = 1;
-		Scanner nameScanner = new Scanner(System.in);
 		while(i <= amountOfPlayers){
 			System.out.println("Enter a name for player " + i);
-			if(nameScanner.hasNextLine()){
-				String currentName = nameScanner.nextLine();
+			if(input.hasNextLine()){
+				String currentName = input.nextLine();
 				if(!playerNames.contains(currentName)){
-					players.add(i-1, new Player(i, currentName, 0));
+					players.add(i-1, new Player(i, currentName, 1));
 					playerNames.add(currentName);
 					i++;
 				} else {
@@ -31,7 +31,10 @@ public class Board {
 				System.out.println("No legal input found, please try again.");
 			}
 		}
-		nameScanner.close();
+	}
+	
+	public String getPlayerName(int playerNb){
+		return players.get(playerNb).getPlayerName();
 	}
 	
 	public void printPlayers(){
@@ -46,6 +49,17 @@ public class Board {
 	}
 
 	public void movePlayer(int playerNb, int roll) {
+		Player currentPlayer = players.get(playerNb);
+		if(currentPlayer.getPosition()+roll <= Math.pow(this.boardDimension,2)){
+			currentPlayer.setPosition(currentPlayer.getPosition()+roll);
+		} else {
+			currentPlayer.setPosition(2*((int)Math.pow(this.boardDimension,2))-(currentPlayer.getPosition()+roll));
+		}
+		resolveSpace(playerNb, currentPlayer.getPosition());
+		System.out.println("New position is " + currentPlayer.getPosition());
+	}
+
+	private void resolveSpace(int playerNb, int position) {
 		// TODO Auto-generated method stub
 		
 	}

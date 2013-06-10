@@ -1,4 +1,7 @@
 package gameFiles;
+
+import java.util.Scanner;
+
 /**
  * 
  * @author Frederi(c|k) and Marley
@@ -9,8 +12,8 @@ public class SnakesAndLadders {
 	private Board gameBoard;
 	private Die gameDie;
 	
-	public SnakesAndLadders(int boardDimension, int amountOfPlayers){
-		this.gameBoard = new Board(boardDimension, amountOfPlayers);
+	public SnakesAndLadders(int boardDimension, int amountOfPlayers, Scanner input){
+		this.gameBoard = new Board(boardDimension, amountOfPlayers, input);
 		gameDie = new Die(6);
 	}
 	
@@ -19,7 +22,10 @@ public class SnakesAndLadders {
 	}
 	
 	public void doTurn(int playerNb){
-		gameBoard.movePlayer(playerNb,gameDie.roll());
+		int roll = gameDie.roll();
+		System.out.println(gameBoard.getPlayerName(playerNb) + " rolls a " + roll + ".");
+		gameBoard.movePlayer(playerNb,roll);
+		
 	}
 
 }

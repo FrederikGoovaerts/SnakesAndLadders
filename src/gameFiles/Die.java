@@ -12,7 +12,7 @@ public class Die {
 	}
 	
 	public int roll(){
-		int eyes = random.nextInt(nbOfSides - 1);
+		int eyes = random.nextInt(nbOfSides);
 		return (eyes + 1);
 	}
 
