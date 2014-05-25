@@ -3,15 +3,35 @@ package gameFiles;
 import exceptions.PlayerAlreadyPresentException;
 import exceptions.PlayerNotPresentException;
 
+/**
+ * Handler to use as access point for the game.
+ * 
+ * @author Frederik Goovaerts
+ */
 public class GameHandler {
 	
 	//--------------------------------------------------------------------------
 	// Constructor
 	//--------------------------------------------------------------------------
-	public GameHandler(Game game){
+	/**
+	 * Create a new GameHandler to interface with given Game.
+	 * 
+	 * @param game
+	 * 		The Game for this handler
+	 * @throws IllegalArgumentException
+	 * 		When the Game is null
+	 */
+	public GameHandler(Game game) throws IllegalArgumentException{
 		if (game == null)
 			throw new IllegalArgumentException("game can not be null!");
 		this.game = game;
+	}
+	
+	/**
+	 * Create a new GameHandler with an empty default Game.
+	 */
+	public GameHandler(){
+		this.game = new Game();
 	}
 	
 	//--------------------------------------------------------------------------
@@ -97,7 +117,7 @@ public class GameHandler {
 	 * @return
 	 * 		Stats of the given player
 	 */
-	public PlayerStats getPlayerStats(String playerName){
+	public String getPlayerStats(String playerName){
 		return this.getGame().getPlayerStats(playerName);
 	}
 	
