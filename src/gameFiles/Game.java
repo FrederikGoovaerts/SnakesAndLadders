@@ -121,6 +121,8 @@ public class Game {
 	 * 		When it is not given player's turn.
 	 */
 	public void doTurn(String playerName) throws TurnException{
+		if(!isPlaying(playerName))
+			throw new PlayerNotPresentException(playerName + ", you are not playing!");
 		if(!getTurnPlayer().equals(playerName))
 			throw new TurnException(playerName + ", it is not your turn!");
 		this.getBoard().doTurn(playerName);
@@ -146,7 +148,7 @@ public class Game {
 	 */
 	public String getPlayerStats(String playerName) throws PlayerNotPresentException{
 		if(!isPlaying(playerName))
-			throw new PlayerNotPresentException();
+			throw new PlayerNotPresentException(playerName + " is not playing right now!");
 		return this.getBoard().getPlayerStats(playerName);
 	}
 	

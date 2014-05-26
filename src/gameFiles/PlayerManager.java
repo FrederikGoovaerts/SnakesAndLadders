@@ -39,13 +39,20 @@ public class PlayerManager {
 	
 	/**
 	 * Add this player to the Manager, regardless of the fact if he/she is
-	 * already present.
+	 * already present. If there are already players, this adds the new player
+	 * before the one whose turn it is.
 	 * 
 	 * @param name
 	 * 		the name of the new player
 	 */
 	private void addToPlayersRaw(String name){
-		this.players.add(name);
+		if(this.getTurnIndex()<=0) {
+			this.players.add(name);
+		} else {
+			this.players.add(this.getTurnIndex(), name);
+			this.setTurnIndex(this.getTurnIndex()+1);
+		}
+		
 	}
 	
 	/**
@@ -57,6 +64,13 @@ public class PlayerManager {
 	 */
 	private void removeFromPlayersRaw(String name){
 		this.players.remove(name);
+	}
+	
+	/**
+	 * @return the amount of players currently in this playermanager.
+	 */
+	private int getAmountOfPlayers(){
+		return this.players.size();
 	}
 	
 	private int turnIndex;
@@ -90,9 +104,12 @@ public class PlayerManager {
 	 * 		When no players are in this manager.
 	 */
 	public String getTurnPlayer() throws NoPlayersPresentException{
-		return null;
-		// TODO Auto-generated method stub
-		
+		if(this.getTurnIndex() == -1)
+			throw new NoPlayersPresentException("There are no players in the game!");
+		if(this.getTurnIndex()>=this.getAmountOfPlayers() ||
+				this.getTurnIndex()<0)
+			throw new IllegalStateException("Turn is not a legal value anymore!");
+		return this.players.get(getTurnIndex());
 	}
 	
 	/**
@@ -102,7 +119,13 @@ public class PlayerManager {
 	 * 		When no players are present.
 	 */
 	void setNextTurn() throws NoPlayersPresentException{
-		//TODO
+		if(this.getTurnIndex() == -1)
+			throw new NoPlayersPresentException("There are no players in the game!");
+		if(this.getTurnIndex() == (this.getAmountOfPlayers()-1)){
+			this.setTurnIndex(0);
+		} else{
+			this.setTurnIndex(this.getTurnIndex()+1);
+		}
 	}
 
 	/**
@@ -114,8 +137,9 @@ public class PlayerManager {
 	 * 		If the player is already in the game.
 	 */
 	public void addPlayer(String playerName) throws PlayerAlreadyPresentException{
-		// TODO Auto-generated method stub
-		
+		if(this.containsPlayer(playerName))
+			throw new PlayerAlreadyPresentException(playerName + " is already playing!");
+		this.addToPlayersRaw(playerName);
 	}
 
 	/**
@@ -127,8 +151,13 @@ public class PlayerManager {
 	 * 		If the player is not in this manager.
 	 */
 	public void removePlayer(String playerName) throws PlayerNotPresentException{
-		// TODO Auto-generated method stub
-		
+		if(!this.containsPlayer(playerName))
+			throw new PlayerNotPresentException(playerName + " is not playing right now!");
+		if(this.getTurnIndex() > this.players.indexOf(playerName))
+			this.setTurnIndex(this.getTurnIndex() -1);
+		this.removeFromPlayersRaw(playerName);
+		if(this.getAmountOfPlayers() == 0)
+			this.setTurnIndex(-1);
 	}
 
 	/**
@@ -137,8 +166,7 @@ public class PlayerManager {
 	 * @return whether player with given name is playing right now.
 	 */
 	public boolean isPlaying(String playerName) {
-		// TODO Auto-generated method stub
-		return false;
+		return this.containsPlayer(playerName);
 	}
 
 }
