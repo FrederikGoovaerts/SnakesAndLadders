@@ -121,5 +121,17 @@ public class GameHandler {
 		return this.getGame().getPlayerStats(playerName);
 	}
 	
+	public boolean isGameWon(){
+		return this.getGame().isGameWon();
+	}
+	
+	public String getWinner(){
+		return this.getGame().getWinner();
+	}
+	
+	public void restartGame(){
+		this.getGame().restartGame();
+	}
+	
 	
 }

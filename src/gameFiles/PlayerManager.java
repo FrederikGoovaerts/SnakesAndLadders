@@ -169,4 +169,8 @@ public class PlayerManager {
 		return this.containsPlayer(playerName);
 	}
 
+	void clearPlayers() {
+		this.players.clear();
+	}
+
 }

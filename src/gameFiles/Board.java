@@ -35,6 +35,8 @@ public class Board {
 		this.players = new TreeMap<String, Integer>();
 		this.die = die;
 		this.boardSize = size;
+		this.gameIsWon = false;
+		this.winner = "";
 	}
 	
 	//--------------------------------------------------------------------------
@@ -80,7 +82,34 @@ public class Board {
 		return this.boardSize;
 	}
 	
+	//--------- BoardEvent methods ---------//
+
 	private final Map<Integer, Integer> boardEvents;
+	
+	/**
+	 * Check whether there is a boardEvent on given square.
+	 * 
+	 * @param square
+	 * 		The square to check for
+	 * @return
+	 * 		Whether there is a board event on given square
+	 */
+	private boolean hasBoardEventFor(int square){
+		return this.boardEvents.containsKey(square);
+	}
+	
+	/**
+	 * Get the board event for given square. Returns null if there is no event.
+	 * 
+	 * @param Square
+	 * 		The square to check for
+	 * @return The boardevent at given square.
+	 */
+	private int getBoardEventAt(Integer Square){
+		return this.boardEvents.get(Square);
+	}
+
+	//----- end of BoardEvent methods -----//
 	
 	//--------- Player methods ---------//
 	
@@ -112,13 +141,76 @@ public class Board {
 	
 	private final Die die;
 	
+	//--------- Game State property ---------//
+
+	private boolean gameIsWon;
+	
+	private String winner;
+	
+	public boolean isGameWon(){
+		return this.gameIsWon;
+	}
+	
+	public String getWinner(){
+		return this.winner;
+	}
+	
+	private void setGameWon(String playerName){
+		this.gameIsWon = true;
+		this.winner = playerName;
+	}
+	
+	void restartGame(){
+		this.gameIsWon = false;
+		this.winner = "";
+		this.players.clear();
+	}
+
+	//----- end of Game State property -----//
+
+	
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
 
+	/**
+	 * Do a turn for player with given name.
+	 * 
+	 * @param playerName
+	 * 		The name of the player.
+	 * @throws PlayerNotPresentException
+	 * 		When given player is not playing
+	 */
 	public void doTurn(String playerName) {
-		// TODO Auto-generated method stub
-		
+		int position = this.getPlayerSquare(playerName);
+		int roll = die.roll();
+		int newPosition = position + roll;
+		if(newPosition > this.getSize()){
+			newPosition = this.getSize() - (newPosition - this.getSize());
+		}
+		int amountOfLaddersEncountered = 0;
+		int amountOfSnakesEncountered = 0;
+		boolean hasMoved = true;
+		while(hasMoved){
+			if(!this.hasBoardEventFor(newPosition)){
+				hasMoved = false;
+			} else {
+				int temp = newPosition;
+				newPosition = this.getBoardEventAt(newPosition);
+				hasMoved = true;
+				if(temp < newPosition){
+					amountOfLaddersEncountered++;
+				} else {
+					amountOfSnakesEncountered++;
+				}
+			}
+		}
+		TurnStats newStats = new TurnStats(playerName, position, newPosition,
+				roll, amountOfLaddersEncountered, amountOfSnakesEncountered);
+		this.setTurnStats(newStats);
+		if(newPosition == this.boardSize){
+			this.setGameWon(playerName);
+		}
 	}
 	
 	/**
