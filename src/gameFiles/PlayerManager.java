@@ -48,6 +48,7 @@ public class PlayerManager {
 	private void addToPlayersRaw(String name){
 		if(this.getTurnIndex()<=0) {
 			this.players.add(name);
+			this.setTurnIndex(0);
 		} else {
 			this.players.add(this.getTurnIndex(), name);
 			this.setTurnIndex(this.getTurnIndex()+1);
@@ -171,6 +172,7 @@ public class PlayerManager {
 
 	void clearPlayers() {
 		this.players.clear();
+		this.setTurnIndex(-1);
 	}
 
 }

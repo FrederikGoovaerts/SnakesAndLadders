@@ -89,6 +89,7 @@ public class Game {
 	 */
 	public void addPlayer(String playerName) throws PlayerAlreadyPresentException {
 		this.getPlayerManager().addPlayer(playerName);
+		this.getBoard().addPlayer(playerName);
 	}
 
 	/**
@@ -101,6 +102,7 @@ public class Game {
 	 */
 	public void removePlayer(String playerName) throws PlayerNotPresentException{
 		this.getPlayerManager().removePlayer(playerName);
+		this.getBoard().removePlayer(playerName);
 	}
 
 	/**
@@ -128,6 +130,8 @@ public class Game {
 		if(!getTurnPlayer().equals(playerName))
 			throw new TurnException(playerName + ", it is not your turn!");
 		this.getBoard().doTurn(playerName);
+		if(this.getLastTurnStats().getRoll() != 6)
+			this.getPlayerManager().setNextTurn();
 	}
 
 	/**
@@ -154,14 +158,24 @@ public class Game {
 		return this.getBoard().getPlayerStats(playerName);
 	}
 	
+	/**
+	 * @return whether the game is won
+	 */
 	public boolean isGameWon(){
 		return this.getBoard().isGameWon();
 	}
 	
+	/**
+	 * @return the person who won the game or an empty string if the game is in
+	 * 		progress
+	 */
 	public String getWinner(){
 		return this.getBoard().getWinner();
 	}
 
+	/**
+	 * Reset the board and players to empty.
+	 */
 	public void restartGame() {
 		this.getPlayerManager().clearPlayers();
 		this.getBoard().restartGame();

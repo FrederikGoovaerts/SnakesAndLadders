@@ -121,14 +121,25 @@ public class GameHandler {
 		return this.getGame().getPlayerStats(playerName);
 	}
 	
+	/**
+	 * @return whether the game is won
+	 */
 	public boolean isGameWon(){
 		return this.getGame().isGameWon();
 	}
 	
+	/**
+	 * @return the person who won the game or an empty string if the game is in
+	 * 		progress
+	 */
 	public String getWinner(){
 		return this.getGame().getWinner();
 	}
 	
+
+	/**
+	 * Reset the board and players to empty.
+	 */
 	public void restartGame(){
 		this.getGame().restartGame();
 	}

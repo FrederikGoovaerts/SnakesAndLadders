@@ -8,6 +8,7 @@ public class TurnStats {
 		this.playerName = playerName;
 		this.oldPos = position;
 		this.newPos = newPosition;
+		this.roll = roll;
 		this.nbLadders = amountOfLaddersEncountered;
 		this.nbSnakes = amountOfSnakesEncountered;
 	}
@@ -22,6 +23,10 @@ public class TurnStats {
 
 	public int getNewPos() {
 		return newPos;
+	}
+	
+	public int getRoll() {
+		return roll;
 	}
 
 	public int getNbLadders() {
@@ -38,8 +43,24 @@ public class TurnStats {
 	
 	private final int newPos;
 	
+	private final int roll;
+	
 	private final int nbLadders;
 	
 	private final int nbSnakes;
+	
+	@Override
+	public String toString(){
+		String result = playerName + " was at square " + oldPos + ", and rolled a " + roll +
+				". ";
+		if(nbLadders > 0){
+			result += "Took " + nbLadders + " ladder(s). ";
+		}
+		if(nbSnakes > 0){
+			result += "Got bit by " + nbSnakes + " snake(s). ";
+		}
+		result += "Ended at square " + newPos + ".";
+		return result;
+	}
 
 }

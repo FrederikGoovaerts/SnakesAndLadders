@@ -25,10 +25,6 @@ public class Board {
 	public Board(int size, Die die, Map<Integer, Integer> events){
 		if (events == null)
 			throw new IllegalArgumentException("events can not be null!");
-		if (events.containsKey(null))
-			throw new IllegalArgumentException("events key can not contain null!");
-		if (events.containsValue(null))
-			throw new IllegalArgumentException("events value can not contain null!");
 		if (die == null)
 			throw new IllegalArgumentException("die can not be null!");
 		this.boardEvents = new TreeMap<>(events);
@@ -128,11 +124,37 @@ public class Board {
 		return players.get(playerName);
 	}
 	
+	private void setPlayerSquare(String playerName, int square) throws PlayerNotPresentException{
+		if(!players.containsKey(playerName))
+			throw new PlayerNotPresentException(playerName + " is not playing right now.");
+		this.players.put(playerName, square);
+	}
+	
 	/**
 	 * @return the amount of players on this board
 	 */
 	private int getAmountOfPlayers(){
 		return players.size();
+	}
+
+	/**
+	 * Add given player to the board, at the starting square.
+	 * 
+	 * @param playerName
+	 * 		Name of the player
+	 */
+	public void addPlayer(String playerName) {
+		players.put(playerName, 1);
+	}
+
+	/**
+	 * Remove given player from the board.
+	 * 
+	 * @param playerName
+	 * 		Name of the player
+	 */
+	public void removePlayer(String playerName) {
+		players.remove(playerName);
 	}
 	
 	private final Map<String, Integer> players;
@@ -147,19 +169,35 @@ public class Board {
 	
 	private String winner;
 	
+	/**
+	 * @return whether the game is won
+	 */
 	public boolean isGameWon(){
 		return this.gameIsWon;
 	}
 	
+	/**
+	 * @return the person who won the game or an empty string if the game is in
+	 * 		progress
+	 */
 	public String getWinner(){
 		return this.winner;
 	}
 	
+	/**
+	 * Set the game as won, and the given player as winner
+	 * 
+	 * @param playerName
+	 * 		Name of the winner
+	 */
 	private void setGameWon(String playerName){
 		this.gameIsWon = true;
 		this.winner = playerName;
 	}
 	
+	/**
+	 * Empty the board, and set the win state to false.
+	 */
 	void restartGame(){
 		this.gameIsWon = false;
 		this.winner = "";
@@ -205,6 +243,7 @@ public class Board {
 				}
 			}
 		}
+		this.setPlayerSquare(playerName, newPosition);
 		TurnStats newStats = new TurnStats(playerName, position, newPosition,
 				roll, amountOfLaddersEncountered, amountOfSnakesEncountered);
 		this.setTurnStats(newStats);
@@ -284,7 +323,7 @@ public class Board {
 		snakesAndLadders.put(62, 19);
 		snakesAndLadders.put(64, 60);
 		snakesAndLadders.put(71, 91);
-		snakesAndLadders.put(80, 100);
+		snakesAndLadders.put(80, 99);
 		snakesAndLadders.put(87, 24);
 		snakesAndLadders.put(93, 73);
 		snakesAndLadders.put(95, 75);
@@ -292,5 +331,6 @@ public class Board {
 		return new Board(100, die, snakesAndLadders);
 		
 	}
+
 
 }
