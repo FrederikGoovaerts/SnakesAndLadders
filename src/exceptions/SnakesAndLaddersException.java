@@ -1,6 +1,8 @@
 package exceptions;
 
 public class SnakesAndLaddersException extends RuntimeException {
+	// TODO: Is this as runtimeexception still the best way?
+	// It works like this but the exception handling is not fully correct
 	
 	/**
 	 * ID for serialization
