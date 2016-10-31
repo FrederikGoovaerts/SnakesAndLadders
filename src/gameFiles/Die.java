@@ -29,8 +29,7 @@ public class Die {
 	 * @return a random number between 1 and the number of sides
 	 */
 	public int roll(){
-		int eyes = random.nextInt(nbOfSides);
-		return (eyes + 1);
+		return (random.nextInt(nbOfSides) + 1);
 	}
 
 }
