@@ -8,6 +8,7 @@ import exceptions.PlayerAlreadyPresentException;
 import exceptions.PlayerNotPresentException;
 
 public class PlayerManager {
+	//TODO: Better way of handling players than with strings?
 	
 	//--------------------------------------------------------------------------
 	// Constructor
